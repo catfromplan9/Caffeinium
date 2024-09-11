@@ -41,7 +41,7 @@ public class ConfigCorruptedScreen extends Screen {
     private final Function<Screen, Screen> nextScreen;
 
     public ConfigCorruptedScreen(@Nullable Screen prevScreen, @Nullable Function<Screen, Screen> nextScreen) {
-        super(Component.literal("Sodium failed to load the configuration file"));
+        super(Component.literal("Caffeinium failed to load the configuration file"));
 
         this.prevScreen = prevScreen;
         this.nextScreen = nextScreen;
@@ -69,7 +69,7 @@ public class ConfigCorruptedScreen extends Screen {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         super.render(graphics, mouseX, mouseY, delta);
 
-        graphics.drawString(this.font, Component.literal("Sodium Renderer"), 32, 32, 0xffffff);
+        graphics.drawString(this.font, Component.literal("Caffeinium Renderer"), 32, 32, 0xffffff);
         graphics.drawString(this.font, Component.literal("Could not load the configuration file"), 32, 48, 0xff0000);
 
         for (int i = 0; i < TEXT_BODY.size(); i++) {

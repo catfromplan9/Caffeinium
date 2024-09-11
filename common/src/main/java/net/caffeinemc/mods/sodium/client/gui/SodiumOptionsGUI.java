@@ -54,7 +54,7 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
     private @Nullable ScreenPrompt prompt;
 
     private SodiumOptionsGUI(Screen prevScreen) {
-        super(Component.literal("Sodium Renderer Settings"));
+        super(Component.literal("Caffeinium Renderer Settings"));
 
         this.prevScreen = prevScreen;
 

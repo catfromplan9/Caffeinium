@@ -99,7 +99,7 @@ public class ModuleScanner {
         }
 
         if (version == null || !isRTSSCompatible(version)) {
-            MessageBox.showMessageBox(window, MessageBox.IconType.ERROR, "Sodium Renderer",
+            MessageBox.showMessageBox(window, MessageBox.IconType.ERROR, "Caffeinium Renderer",
                     """
                             You appear to be using an older version of RivaTuner Statistics Server (RTSS) which is not compatible with Sodium.
                             
@@ -123,7 +123,7 @@ public class ModuleScanner {
     }
 
     private static void checkASUSGpuTweakIII(long window) {
-        MessageBox.showMessageBox(window, MessageBox.IconType.ERROR, "Sodium Renderer",
+        MessageBox.showMessageBox(window, MessageBox.IconType.ERROR, "Caffeinium Renderer",
                 """
                         ASUS GPU Tweak III is not compatible with Minecraft, and causes extreme performance issues and severe graphical corruption when used with Minecraft.
                         

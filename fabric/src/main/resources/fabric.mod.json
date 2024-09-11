@@ -2,47 +2,9 @@
   "schemaVersion" : 1,
   "id" : "sodium",
   "version" : "${version}",
-  "name" : "Sodium",
-  "description" : "Sodium is a powerful rendering engine for Minecraft which greatly improves frame rates and micro-stutter, while fixing many graphical issues",
-  "authors" : [
-    {
-      "name" : "@jellysquid3",
-      "contact" : {
-        "email" : "jellysquid@pm.me",
-        "homepage" : "https://jellysquid.me"
-      }
-    }
-  ],
-  "contributors" : [
-    "@IMS212",
-    "@bytzo",
-    "@PepperCode1",
-    "@FlashyReese",
-    "@altrisi",
-    "@Grayray75",
-    "@Madis0",
-    "@Johni0702",
-    "@comp500",
-    "@coderbot16",
-    "@Moulberry",
-    "@MCRcortex",
-    "@Altirix",
-    "@embeddedt",
-    "@pajicadvance",
-    "@Kroppeb",
-    "@douira",
-    "@burgerindividual",
-    "@TwistedZero",
-    "@Leo40Git",
-    "@haykam821"
-  ],
-  "contact" : {
-    "homepage" : "https://github.com/CaffeineMC/sodium-fabric",
-    "sources" : "https://github.com/CaffeineMC/sodium-fabric",
-    "issues" : "https://github.com/CaffeineMC/sodium-fabric/issues"
-  },
+  "name" : "Caffeinium",
+  "description" : "Caffeinium is a powerful rendering engine for Minecraft which greatly improves frame rates and micro-stutter, while fixing many graphical issues",
   "license" : "Polyform-Shield-1.0.0",
-  "icon" : "sodium-icon.png",
   "environment" : "client",
   "entrypoints" : {
     "client" : [
@@ -53,13 +15,7 @@
     ]
   },
   "custom" : {
-    "fabric-renderer-api-v1:contains_renderer" : true,
-    "modmenu" : {
-      "links" : {
-        "modmenu.discord" : "https://caffeinemc.net/discord",
-        "modmenu.github_releases" : "https://github.com/CaffeineMC/sodium-fabric/releases",
-        "modmenu.modrinth" : "https://modrinth.com/mod/sodium"
-      }
+    "fabric-renderer-api-v1:contains_renderer" : true
     }
   },
   "accessWidener" : "sodium.accesswidener",
