@@ -2,7 +2,7 @@
 # We don't want to publish build artifacts or expose our other caches to possibly untrusted code
 name: build-pull-request
 
-on: [ pull_request ]
+on: [pull_request]
 
 jobs:
   build:
@@ -27,5 +27,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: sodium-artifacts-${{ steps.ref.outputs.branch }}
+          name: caffeinium-artifacts-${{ steps.ref.outputs.branch }}
           path: build/libs/*.jar

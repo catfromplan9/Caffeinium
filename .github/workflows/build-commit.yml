@@ -2,7 +2,7 @@
 # This makes use of caching for faster builds and uploads the resulting artifacts
 name: build-commit
 
-on: [ push ]
+on: [push]
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: sodium-artifacts-${{ steps.ref.outputs.branch }}
+          name: caffeinium-artifacts-${{ steps.ref.outputs.branch }}
           path: |
             neoforge/build/libs/*.jar
             fabric/build/libs/*.jar
