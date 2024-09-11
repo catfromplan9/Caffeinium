@@ -16,7 +16,6 @@
   },
   "custom" : {
     "fabric-renderer-api-v1:contains_renderer" : true
-    }
   },
   "accessWidener" : "sodium.accesswidener",
   "mixins" : [
