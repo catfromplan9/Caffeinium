@@ -23,7 +23,6 @@ public class SodiumGameOptions {
     public final QualitySettings quality = new QualitySettings();
     public final AdvancedSettings advanced = new AdvancedSettings();
     public final PerformanceSettings performance = new PerformanceSettings();
-    public final NotificationSettings notifications = new NotificationSettings();
 
     private boolean readOnly;
 
@@ -66,11 +65,6 @@ public class SodiumGameOptions {
         public GraphicsQuality leavesQuality = GraphicsQuality.DEFAULT;
 
         public boolean enableVignette = true;
-    }
-
-    public static class NotificationSettings {
-        public boolean hasClearedDonationButton = false;
-        public boolean hasSeenDonationPrompt = false;
     }
 
     public enum GraphicsQuality implements TextProvider {

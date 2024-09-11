@@ -1,7 +1,6 @@
 package net.caffeinemc.mods.sodium.client.gui;
 
 import net.caffeinemc.mods.sodium.client.SodiumClientMod;
-import net.caffeinemc.mods.sodium.client.data.fingerprint.HashedFingerprint;
 import net.caffeinemc.mods.sodium.client.console.Console;
 import net.caffeinemc.mods.sodium.client.console.message.MessageLevel;
 import net.caffeinemc.mods.sodium.client.gui.options.*;
@@ -48,7 +47,6 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
     private OptionPage currentPage;
 
     private FlatButtonWidget applyButton, closeButton, undoButton;
-    private FlatButtonWidget donateButton, hideDonateButton;
 
     private boolean hasPendingChanges;
     private ControlElement<?> hoveredElement;
@@ -64,61 +62,6 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
         this.pages.add(SodiumGameOptionPages.quality());
         this.pages.add(SodiumGameOptionPages.performance());
         this.pages.add(SodiumGameOptionPages.advanced());
-
-        this.checkPromptTimers();
-    }
-
-    private void checkPromptTimers() {
-        // Never show the prompt in developer workspaces.
-        if (PlatformRuntimeInformation.getInstance().isDevelopmentEnvironment()) {
-            return;
-        }
-
-        var options = SodiumClientMod.options();
-
-        // If the user has already seen the prompt, don't show it again.
-        if (options.notifications.hasSeenDonationPrompt) {
-            return;
-        }
-
-        HashedFingerprint fingerprint = null;
-
-        try {
-            fingerprint = HashedFingerprint.loadFromDisk();
-        } catch (Throwable t) {
-            SodiumClientMod.logger()
-                    .error("Failed to read the fingerprint from disk", t);
-        }
-
-        // If the fingerprint doesn't exist, or failed to be loaded, abort.
-        if (fingerprint == null) {
-            return;
-        }
-
-        // The fingerprint records the installation time. If it's been a while since installation, show the user
-        // a prompt asking for them to consider donating.
-        var now = Instant.now();
-        var threshold = Instant.ofEpochSecond(fingerprint.timestamp())
-                .plus(3, ChronoUnit.DAYS);
-
-        if (now.isAfter(threshold)) {
-            this.openDonationPrompt(options);
-        }
-    }
-
-    private void openDonationPrompt(SodiumGameOptions options) {
-        var prompt = new ScreenPrompt(this, DONATION_PROMPT_MESSAGE, 320, 190,
-                new ScreenPrompt.Action(Component.literal("Buy us a coffee"), this::openDonationPage));
-        prompt.setFocused(true);
-
-        options.notifications.hasSeenDonationPrompt = true;
-
-        try {
-            SodiumGameOptions.writeToDisk(options);
-        } catch (IOException e) {
-            SodiumClientMod.logger()
-                    .error("Failed to update config file", e);
-        }
     }
 
     public static Screen createScreen(Screen currentScreen) {
@@ -166,36 +109,10 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
         this.undoButton = new FlatButtonWidget(new Dim2i(this.width - 211, this.height - 30, 65, 20), Component.translatable("sodium.options.buttons.undo"), this::undoChanges);
         this.applyButton = new FlatButtonWidget(new Dim2i(this.width - 142, this.height - 30, 65, 20), Component.translatable("sodium.options.buttons.apply"), this::applyChanges);
         this.closeButton = new FlatButtonWidget(new Dim2i(this.width - 73, this.height - 30, 65, 20), Component.translatable("gui.done"), this::onClose);
-        this.donateButton = new FlatButtonWidget(new Dim2i(this.width - 128, 6, 100, 20), Component.translatable("sodium.options.buttons.donate"), this::openDonationPage);
-        this.hideDonateButton = new FlatButtonWidget(new Dim2i(this.width - 26, 6, 20, 20), Component.literal("x"), this::hideDonationButton);
-
-        if (SodiumClientMod.options().notifications.hasClearedDonationButton) {
-            this.setDonationButtonVisibility(false);
-        }
 
         this.addRenderableWidget(this.undoButton);
         this.addRenderableWidget(this.applyButton);
         this.addRenderableWidget(this.closeButton);
-        this.addRenderableWidget(this.donateButton);
-        this.addRenderableWidget(this.hideDonateButton);
-    }
-
-    private void setDonationButtonVisibility(boolean value) {
-        this.donateButton.setVisible(value);
-        this.hideDonateButton.setVisible(value);
-    }
-
-    private void hideDonationButton() {
-        SodiumGameOptions options = SodiumClientMod.options();
-        options.notifications.hasClearedDonationButton = true;
-
-        try {
-            SodiumGameOptions.writeToDisk(options);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save configuration", e);
-        }
-
-        this.setDonationButtonVisibility(false);
     }
 
     private void rebuildGUIPages() {
@@ -370,11 +287,6 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
                 .forEach(Option::reset);
     }
 
-    private void openDonationPage() {
-        Util.getPlatform()
-                .openUri("https://caffeinemc.net/donate");
-    }
-
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (this.prompt != null && this.prompt.keyPressed(keyCode, scanCode, modifiers)) {
@@ -435,17 +347,5 @@ public class SodiumOptionsGUI extends Screen implements ScreenPromptable {
     @Override
     public Dim2i getDimensions() {
         return new Dim2i(0, 0, this.width, this.height);
-    }
-
-    private static final List<FormattedText> DONATION_PROMPT_MESSAGE;
-
-    static {
-        DONATION_PROMPT_MESSAGE = List.of(
-                FormattedText.composite(Component.literal("Hello!")),
-                FormattedText.composite(Component.literal("It seems that you've been enjoying "), Component.literal("Sodium").withColor(0x27eb92), Component.literal(", the powerful and open rendering optimization mod for Minecraft.")),
-                FormattedText.composite(Component.literal("Mods like these are complex. They require "), Component.literal("thousands of hours").withColor(0xff6e00), Component.literal(" of development, debugging, and tuning to create the experience that players have come to expect.")),
-                FormattedText.composite(Component.literal("If you'd like to show your token of appreciation, and support the development of our mod in the process, then consider "), Component.literal("buying us a coffee").withColor(0xed49ce), Component.literal(".")),
-                FormattedText.composite(Component.literal("And thanks again for using our mod! We hope it helps you (and your computer.)"))
-        );
     }
 }
